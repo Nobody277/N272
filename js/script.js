@@ -6,18 +6,40 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  initMainPage();
+});
+
+/**
+ * Initializes the main page components and event listeners
+ */
+function initMainPage() {
   const isReturningFromBtc = document.referrer.includes('btc.html');
   createStars(isReturningFromBtc);
   setInterval(createShootingStar, 2000);
+  setupBackgroundMouseMove();
+  setupOptionsPanel();
+  setupPasswordHandling();
+  setupErrorHandling();
+}
 
+/**
+ * Sets up the background parallax effect on mouse move
+ */
+function setupBackgroundMouseMove() {
   document.addEventListener('mousemove', (e) => {
     const mouseX = e.clientX / window.innerWidth;
     const mouseY = e.clientY / window.innerHeight;
     const background = document.querySelector('.animated-background');
     background.style.backgroundPosition = `${mouseX * 5 + 45}% ${mouseY * 5 + 45}%`;
   });
+}
 
+/**
+ * Sets up the options panel and option click handlers
+ */
+function setupOptionsPanel() {
   const optionsPanel = document.querySelector('.options-panel');
+  
   setTimeout(() => {
     if (optionsPanel) {
       optionsPanel.classList.add('visible');
@@ -31,23 +53,20 @@ document.addEventListener('DOMContentLoaded', () => {
       handleOptionClick(optionType);
     });
   });
+}
 
+/**
+ * Sets up password modal and related event handlers
+ */
+function setupPasswordHandling() {
   const passwordModal = document.querySelector('.password-modal');
   const passwordInput = document.getElementById('school-password');
   const passwordSubmit = document.getElementById('password-submit');
-  const errorMessage = document.querySelector('.error-message');
-  const errorText = document.querySelector('.error-text');
-  const errorClose = document.querySelector('.error-close');
-
+  
   if (passwordModal) {
     passwordModal.addEventListener('click', (e) => {
       if (e.target === passwordModal) {
-        passwordModal.classList.remove('visible');
-        if (optionsPanel) {
-          optionsPanel.style.opacity = '1';
-          optionsPanel.style.transform = 'scale(1)';
-          optionsPanel.style.pointerEvents = 'auto';
-        }
+        closePasswordModal(passwordModal);
       }
     });
   }
@@ -65,11 +84,32 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+}
+
+/**
+ * Closes the password modal and shows the options panel
+ * @param {HTMLElement} passwordModal - The password modal element
+ */
+function closePasswordModal(passwordModal) {
+  passwordModal.classList.remove('visible');
+  const optionsPanel = document.querySelector('.options-panel');
+  
+  if (optionsPanel) {
+    optionsPanel.style.opacity = '1';
+    optionsPanel.style.transform = 'scale(1)';
+    optionsPanel.style.pointerEvents = 'auto';
+  }
+}
+
+/**
+ * Sets up error handling for the error message dialog
+ */
+function setupErrorHandling() {
+  const errorMessage = document.querySelector('.error-message');
+  const errorClose = document.querySelector('.error-close');
   
   if (errorClose) {
-    errorClose.addEventListener('click', () => {
-      hideError();
-    });
+    errorClose.addEventListener('click', hideError);
   }
   
   if (errorMessage) {
@@ -79,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
-});
+}
 
 /**
  * Shows a custom error message
@@ -110,9 +150,8 @@ function hideError() {
 }
 
 /**
- * Handles the password submission and sends it to the backend for verification.
- * First pings the server to wake it up, then sends the password.
- * @param {string} password - The submitted password.
+ * Handles the password submission and sends it to the backend for verification
+ * @param {string} password - The submitted password
  */
 function handlePasswordSubmit(password) {
   if (!password.trim()) {
@@ -123,26 +162,13 @@ function handlePasswordSubmit(password) {
   const loadingOverlay = document.querySelector('.loading-overlay');
   loadingOverlay.classList.add('visible');
   
-  fetch('https://n272-backend.onrender.com/api/wake-up')
-    .then(response => {
-      return fetch('https://n272-backend.onrender.com/api/school-authenticate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ password })
-      });
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Invalid password or server error');
-      }
-      return response.json();
-    })
+  wakeUpServer()
+    .then(() => authenticateWithServer(password))
     .then(data => {
       loadingOverlay.classList.remove('visible');
       
       if (data.success) {
+        storeAuthToken(data.token);
         window.location.href = 'school';
       } else {
         showError('Invalid password.');
@@ -150,232 +176,270 @@ function handlePasswordSubmit(password) {
     })
     .catch(error => {
       loadingOverlay.classList.remove('visible');
-      console.error('Error during authentication:', error);
       showError(error.message);
     });
 }
 
 /**
- * Handles click events on options and navigates based on the selected option.
- * @param {string} optionType - The type of option selected.
+ * Wakes up the server before authentication
+ * @returns {Promise} A promise that resolves when the server is awake
+ */
+function wakeUpServer() {
+  return fetch('https://n272-backend.onrender.com/api/wake-up');
+}
+
+/**
+ * Authenticates with the server using the provided password
+ * @param {string} password - The password to authenticate with
+ * @returns {Promise} A promise that resolves with the authentication response
+ */
+function authenticateWithServer(password) {
+  return fetch('https://n272-backend.onrender.com/api/school-authenticate', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ password }),
+    credentials: 'include'
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Invalid password or server error');
+    }
+    return response.json();
+  });
+}
+
+/**
+ * Stores the authentication token in local storage
+ * @param {string} token - The authentication token to store
+ */
+function storeAuthToken(token) {
+  localStorage.setItem('schoolAuthToken', token);
+  localStorage.setItem('schoolAuthTime', Date.now().toString());
+}
+
+/**
+ * Handles click events on options and navigates based on the selected option
+ * @param {string} optionType - The type of option selected
  */
 function handleOptionClick(optionType) {
-  try {
-    const optionsPanel = document.querySelector('.options-panel');
-    const container = document.querySelector('.container');
-    const stars = document.querySelectorAll('.star');
-    const shootingStars = document.querySelectorAll('.shooting-star-container');
-    const passwordModal = document.querySelector('.password-modal');
+  const optionsPanel = document.querySelector('.options-panel');
+  const container = document.querySelector('.container');
+  const stars = document.querySelectorAll('.star');
+  const passwordModal = document.querySelector('.password-modal');
 
-    if (optionType === 'school') {
-      optionsPanel.style.opacity = '0';
-      optionsPanel.style.transform = 'scale(0.95)';
-      optionsPanel.style.pointerEvents = 'none';
-      
-      setTimeout(() => {
-        passwordModal.classList.add('visible');
-        document.getElementById('school-password').focus();
-      }, 900);
-      
-      return;
-    }
-
-    optionsPanel.style.opacity = '0';
-    optionsPanel.style.transform = 'scale(0.95)';
-    optionsPanel.style.pointerEvents = 'none';
-
-    container.classList.add('transitioning-out');
-
-    stars.forEach((star) => {
-      star.style.transition = 'opacity 0.8s ease';
-      star.style.opacity = '0 !important';
-      star.style.animationPlayState = 'paused';
-    });
-
-    const fadeOutStyle = document.createElement('style');
-    fadeOutStyle.textContent = `
-      .transitioning-out .star {
-        opacity: 0 !important;
-        transition: opacity 0.8s ease !important;
-        animation-play-state: paused !important;
-      }
-      .transitioning-out .shooting-star-container {
-        opacity: 0 !important;
-        transition: opacity 0.8s ease !important;
-      }
-    `;
-    document.head.appendChild(fadeOutStyle);
-
-    shootingStars.forEach((star) => {
-      if (star) {
-        star.style.transition = 'opacity 0.8s ease';
-        star.style.opacity = '0';
-      }
-    });
-
-    switch (optionType) {
-      case 'btc':
-        setTimeout(() => {
-          window.location.href = 'btc';
-        }, 900);
-        break;
-      case 'tbd':
-        setTimeout(() => {
-          alert('Navigating to TBD...');
-        }, 1000);
-        break;
-      default:
-        break;
-    }
-  } catch (error) {
-    throw new Error(`Error in handleOptionClick: ${error.message}`);
+  if (optionType === 'school') {
+    handleSchoolOptionClick(optionsPanel, passwordModal);
+    return;
   }
+
+  fadeOutPage(optionsPanel, container, stars);
+  navigateTo(optionType);
 }
 
 /**
- * Creates star elements in the background and fades them in.
- * @param {boolean} isReturningFromBtc - Indicates if returning from the BTC page.
+ * Handles the school option click
+ * @param {HTMLElement} optionsPanel - The options panel element
+ * @param {HTMLElement} passwordModal - The password modal element
+ */
+function handleSchoolOptionClick(optionsPanel, passwordModal) {
+  optionsPanel.style.opacity = '0';
+  optionsPanel.style.transform = 'scale(0.95)';
+  optionsPanel.style.pointerEvents = 'none';
+  
+  setTimeout(() => {
+    passwordModal.classList.add('visible');
+    document.getElementById('school-password').focus();
+  }, 900);
+}
+
+/**
+ * Fades out the page elements
+ * @param {HTMLElement} optionsPanel - The options panel element
+ * @param {HTMLElement} container - The main container element
+ * @param {NodeList} stars - The star elements
+ */
+function fadeOutPage(optionsPanel, container, stars) {
+  optionsPanel.style.opacity = '0';
+  optionsPanel.style.transform = 'scale(0.95)';
+  optionsPanel.style.pointerEvents = 'none';
+
+  container.classList.add('transitioning-out');
+
+  stars.forEach((star) => {
+    star.style.transition = 'opacity 0.8s ease';
+    star.style.opacity = '0 !important';
+    star.style.animationPlayState = 'paused';
+  });
+
+  const fadeOutStyle = document.createElement('style');
+  fadeOutStyle.textContent = `
+    .star {
+      opacity: 0 !important;
+      animation: none !important;
+    }
+    .shooting-star-container {
+      opacity: 0 !important;
+      animation: none !important;
+    }
+  `;
+  document.head.appendChild(fadeOutStyle);
+}
+
+/**
+ * Navigates to the selected option page
+ * @param {string} optionType - The type of option to navigate to
+ */
+function navigateTo(optionType) {
+  setTimeout(() => {
+    window.location.href = optionType === 'btc' ? 'btc' : '#';
+  }, 800);
+}
+
+/**
+ * Creates a starfield background with optional twinkling
+ * @param {boolean} isReturningFromBtc - Whether the user is returning from the BTC page
  */
 function createStars(isReturningFromBtc) {
-  const container = document.querySelector('.container');
-  const starCount = 250;
-  const initialOpacity = '0';
-
+  const container = document.querySelector('.animated-background');
+  if (!container) return;
+  
+  const starCount = isReturningFromBtc ? 350 : 250;
+  
   for (let i = 0; i < starCount; i++) {
-    const star = document.createElement('div');
-    star.classList.add('star');
-    star.style.left = `${Math.random() * 100}%`;
-    star.style.top = `${Math.random() * 100}%`;
-    const size = Math.random() * 2 + 0.5;
-    star.style.width = `${size}px`;
-    star.style.height = `${size}px`;
-    const shouldTwinkle = Math.random() > 0.3;
-    star.style.transition = 'opacity 1.5s ease';
-    star.style.opacity = initialOpacity;
-    if (shouldTwinkle) {
-      star.setAttribute('data-original-opacity', '0.3');
-      const duration = Math.random() * 7 + 5;
-      const delay = Math.random() * 15;
-      star.style.animation = `twinkle ${duration}s ease-in-out ${delay}s infinite`;
-    } else {
-      const brightness = Math.random() * 0.7 + 0.3;
-      star.setAttribute('data-original-opacity', brightness);
-    }
-    container.appendChild(star);
+    createSingleStar(container, isReturningFromBtc);
   }
-
-  const fadeInDelay = isReturningFromBtc ? 300 : 500;
-  setTimeout(() => {
-    const stars = document.querySelectorAll('.star');
-    stars.forEach((star) => {
-      const originalOpacity = star.getAttribute('data-original-opacity');
-      star.style.opacity = originalOpacity;
-    });
-  }, fadeInDelay);
+  
+  if (!isReturningFromBtc) {
+    setTimeout(revealStars, 600);
+  } else {
+    revealStars();
+  }
 }
 
 /**
- * Creates a shooting star element with a continuous trail animation.
+ * Creates a single star element and adds it to the container
+ * @param {HTMLElement} container - The container for the stars
+ * @param {boolean} isReturningFromBtc - Whether the user is returning from BTC page
+ */
+function createSingleStar(container, isReturningFromBtc) {
+  const star = document.createElement('div');
+  star.classList.add('star');
+  star.style.left = `${Math.random() * 100}%`;
+  star.style.top = `${Math.random() * 100}%`;
+  
+  const size = Math.random() * 2 + 0.5;
+  star.style.width = `${size}px`;
+  star.style.height = `${size}px`;
+  
+  const initialOpacity = isReturningFromBtc ? (Math.random() * 0.5 + 0.2).toFixed(2) : 0;
+  star.style.opacity = initialOpacity;
+  
+  if (!isReturningFromBtc) {
+    star.style.transition = 'opacity 1.5s ease';
+  }
+  
+  const shouldTwinkle = Math.random() > 0.3;
+  if (shouldTwinkle) {
+    const duration = Math.random() * 5 + 3;
+    const delay = Math.random() * 3;
+    star.setAttribute('data-original-opacity', '0.3');
+    star.style.animation = `twinkle ${duration}s ease-in-out ${delay}s infinite`;
+  } else {
+    const brightness = (Math.random() * 0.5 + 0.2).toFixed(2);
+    star.setAttribute('data-original-opacity', brightness);
+  }
+  
+  container.appendChild(star);
+}
+
+/**
+ * Reveals all stars with a fade-in effect
+ */
+function revealStars() {
+  const stars = document.querySelectorAll('.star');
+  stars.forEach(star => {
+    if (star.style.opacity === '0') {
+      const originalOpacity = star.getAttribute('data-original-opacity');
+      star.style.opacity = originalOpacity;
+    }
+  });
+}
+
+/**
+ * Creates and animates a shooting star
  */
 function createShootingStar() {
-  const container = document.querySelector('.container');
+  const container = document.querySelector('.animated-background');
+  if (!container) return;
+  
+  const shootingStarContainer = document.createElement('div');
+  shootingStarContainer.className = 'shooting-star-container';
+  
+  const shootingStar = document.createElement('div');
+  shootingStar.className = 'shooting-star';
+  
+  const trail = document.createElement('div');
+  trail.className = 'star-trail';
+  
+  shootingStarContainer.appendChild(shootingStar);
+  shootingStarContainer.appendChild(trail);
+  container.appendChild(shootingStarContainer);
+  
+  const top = Math.random() * 40 + 5;
+  const left = Math.random() * 25 + 5;
+  const size = Math.random() * 2 + 1;
+  
+  shootingStarContainer.style.top = `${top}%`;
+  shootingStarContainer.style.left = `${left}%`;
+  shootingStar.style.width = `${size}px`;
+  shootingStar.style.height = `${size}px`;
+  
+  const trailLength = Math.random() * 150 + 50;
+  trail.style.width = `${trailLength}px`;
+  
+  const angle = Math.random() * 20 + 20;
+  shootingStarContainer.style.transform = `rotate(${angle}deg)`;
+  
+  const startTime = performance.now();
+  const duration = Math.random() * 1500 + 1000;
+  
+  requestAnimationFrame(function animate(timestamp) {
+    animateShootingStar(timestamp, startTime, duration, shootingStarContainer);
+  });
+  
+  setTimeout(() => {
+    shootingStarContainer.remove();
+  }, duration + 100);
+}
 
-  if (Math.random() > 0.5) {
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const edgeStart = Math.floor(Math.random() * 4);
-    let startX, startY, angle;
-
-    switch (edgeStart) {
-      case 0:
-        startX = Math.random() * viewportWidth * 1.5 - viewportWidth * 0.25;
-        startY = -50;
-        angle = Math.random() * 30 + 30;
-        if (startX > viewportWidth / 2) angle = -angle;
-        break;
-      case 1:
-        startX = viewportWidth + 50;
-        startY = Math.random() * viewportHeight * 0.7;
-        angle = Math.random() * 30 + 150;
-        break;
-      case 2:
-        if (Math.random() > 0.7) {
-          startX = Math.random() * viewportWidth;
-          startY = viewportHeight + 50;
-          angle = Math.random() * 30 - 120;
-        } else {
-          startX = Math.random() * viewportWidth;
-          startY = -50;
-          angle = Math.random() * 30 + 30;
-          if (startX > viewportWidth / 2) angle = -angle;
-        }
-        break;
-      case 3:
-        startX = -50;
-        startY = Math.random() * viewportHeight * 0.7;
-        angle = Math.random() * 30;
-        break;
-      default:
-        startX = 0;
-        startY = 0;
-        angle = 45;
-        break;
-    }
-
-    const angleRad = (angle * Math.PI) / 180;
-    const diagonalLength =
-      Math.sqrt(viewportWidth ** 2 + viewportHeight ** 2) * 1.5;
-    const endX = startX + Math.cos(angleRad) * diagonalLength;
-    const endY = startY + Math.sin(angleRad) * diagonalLength;
-
-    const shootingStarContainer = document.createElement('div');
-    shootingStarContainer.classList.add('shooting-star-container');
-    shootingStarContainer.style.left = `${startX}px`;
-    shootingStarContainer.style.top = `${startY}px`;
-    shootingStarContainer.style.transform = `rotate(${angle}deg)`;
-    shootingStarContainer.style.transition = 'opacity 1.5s ease';
-    shootingStarContainer.style.opacity = '0';
-
-    const starHead = document.createElement('div');
-    starHead.classList.add('star-head');
-    const trail = document.createElement('div');
-    trail.classList.add('star-trail');
-    shootingStarContainer.appendChild(trail);
-    shootingStarContainer.appendChild(starHead);
-    container.appendChild(shootingStarContainer);
-
-    const isReturningFromBtc = document.referrer.includes('btc.html');
-    const fadeInDelay = isReturningFromBtc ? 300 : 500;
-    setTimeout(() => {
-      shootingStarContainer.style.opacity = '1';
-    }, fadeInDelay);
-
-    const speed = Math.random() * 600 + 500;
-    const totalDistance = Math.sqrt(
-      (endX - startX) ** 2 + (endY - startY) ** 2
+/**
+ * Animates a shooting star across the screen
+ * @param {number} timestamp - The current animation timestamp
+ * @param {number} startTime - The time when the animation started
+ * @param {number} duration - The duration of the animation
+ * @param {HTMLElement} shootingStarContainer - The shooting star container element
+ */
+function animateShootingStar(timestamp, startTime, duration, shootingStarContainer) {
+  const elapsed = timestamp - startTime;
+  const progress = Math.min(elapsed / duration, 1);
+  
+  const distance = 100;
+  const currentDistance = distance * progress;
+  
+  shootingStarContainer.style.transform = `rotate(${shootingStarContainer.dataset.angle || 30}deg) translateX(${currentDistance}vw)`;
+  
+  if (progress < 0.2) {
+    shootingStarContainer.style.opacity = progress / 0.2;
+  } else if (progress > 0.8) {
+    shootingStarContainer.style.opacity = (1 - progress) / 0.2;
+  }
+  
+  if (progress < 1) {
+    requestAnimationFrame((newTimestamp) => 
+      animateShootingStar(newTimestamp, startTime, duration, shootingStarContainer)
     );
-    const duration = totalDistance / speed;
-    const startTime = performance.now();
-    let trailLength = 0;
-    const maxTrailLength = Math.random() * 150 + 100;
-
-    function animateShootingStar(timestamp) {
-      const elapsed = (timestamp - startTime) / 1000;
-      if (elapsed < duration) {
-        const progress = elapsed / duration;
-        const distance = totalDistance * progress;
-        const currentX = startX + (endX - startX) * progress;
-        const currentY = startY + (endY - startY) * progress;
-        shootingStarContainer.style.left = `${currentX}px`;
-        shootingStarContainer.style.top = `${currentY}px`;
-        trailLength = distance < maxTrailLength ? distance : maxTrailLength;
-        trail.style.width = `${trailLength}px`;
-        requestAnimationFrame(animateShootingStar);
-      } else {
-        shootingStarContainer.remove();
-      }
-    }
-    requestAnimationFrame(animateShootingStar);
   }
 }
 
