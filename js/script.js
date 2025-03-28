@@ -40,9 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
     passwordModal.addEventListener('click', (e) => {
       if (e.target === passwordModal) {
         passwordModal.classList.remove('visible');
-        optionsPanel.style.opacity = '1';
-        optionsPanel.style.transform = 'scale(1)';
-        optionsPanel.style.pointerEvents = 'auto';
+        if (optionsPanel) {
+          optionsPanel.style.opacity = '1';
+          optionsPanel.style.transform = 'scale(1)';
+          optionsPanel.style.pointerEvents = 'auto';
+        }
       }
     });
   }
