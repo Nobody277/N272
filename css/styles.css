@@ -332,7 +332,7 @@ body {
   transform: scale(0.95);
   transition: transform 0.5s ease;
   width: 300px;
-  height: 300px;
+  height: 246px;
   position: relative;
   align-items: center;
   justify-content: space-between;
