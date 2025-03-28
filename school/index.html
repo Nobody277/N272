@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>School</title>
+    <link rel="stylesheet" href="../css/styles.css" />
+    <link rel="stylesheet" href="css/school-styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="animated-background"></div>
+      <div class="stars-container"></div>
+      <div class="school-dashboard">
+        <div class="sidebar">
+          <div class="sidebar-header">
+            <h1>School</h1>
+            <div class="back-button">
+              <span>&larr; Back</span>
+            </div>
+          </div>
+          <div class="class-selector">
+            <select
+              id="class-select"
+              style="background-color: rgba(0, 0, 0, 0.2); color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);"
+            >
+              <option value="biology">Biology</option>
+              <option value="mathematics">Mathematics</option>
+              <option value="history">History</option>
+              <option value="english">English</option>
+            </select>
+          </div>
+          <nav class="nav-menu">
+            <ul>
+              <li data-section="home" class="active">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+              </li>
+              <li data-section="announcements">
+                <i class="fas fa-bullhorn"></i>
+                <span>Announcements</span>
+              </li>
+              <li data-section="assignments">
+                <i class="fas fa-tasks"></i>
+                <span>Assignments</span>
+              </li>
+              <li data-section="grades">
+                <i class="fas fa-chart-bar"></i>
+                <span>Grades</span>
+              </li>
+              <li data-section="files">
+                <i class="fas fa-file-alt"></i>
+                <span>Files</span>
+              </li>
+              <li data-section="quizzes">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Quizzes</span>
+              </li>
+              <li data-section="syllabus">
+                <i class="fas fa-book"></i>
+                <span>Syllabus</span>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <div class="content-area">
+          <section id="home" class="content-section active">
+            <div class="section-header">
+              <h2>Home</h2>
+            </div>
+            <div class="overview-cards">
+              <div class="card grade-overview-card">
+                <h3>Current GPA</h3>
+                <div class="gpa-display">
+                  <span class="gpa-value">3.85</span>
+                  <span class="gpa-label">Semester GPA</span>
+                </div>
+              </div>
+              <div class="card assignments-overview-card">
+                <h3>Assignments</h3>
+                <div class="overview-stats">
+                  <div class="stat">
+                    <span class="stat-value">4</span>
+                    <span class="stat-label">Due Soon</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-value">2</span>
+                    <span class="stat-label">Late</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-value">12</span>
+                    <span class="stat-label">Completed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card grades-by-class">
+              <h3>Grades by Class</h3>
+              <div class="grades-list">
+                <div class="class-grade">
+                  <div class="class-info">
+                    <span class="class-name">Biology</span>
+                    <span class="class-score">92%</span>
+                  </div>
+                  <div class="grade-bar">
+                    <div class="grade-progress" style="width: 92%;">A</div>
+                  </div>
+                </div>
+                <div class="class-grade">
+                  <div class="class-info">
+                    <span class="class-name">Mathematics</span>
+                    <span class="class-score">87%</span>
+                  </div>
+                  <div class="grade-bar">
+                    <div class="grade-progress" style="width: 87%;">B+</div>
+                  </div>
+                </div>
+                <div class="class-grade">
+                  <div class="class-info">
+                    <span class="class-name">History</span>
+                    <span class="class-score">95%</span>
+                  </div>
+                  <div class="grade-bar">
+                    <div class="grade-progress" style="width: 95%;">A</div>
+                  </div>
+                </div>
+                <div class="class-grade">
+                  <div class="class-info">
+                    <span class="class-name">English</span>
+                    <span class="class-score">90%</span>
+                  </div>
+                  <div class="grade-bar">
+                    <div class="grade-progress" style="width: 90%;">A-</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card upcoming-overview">
+              <h3>Upcoming</h3>
+              <div class="upcoming-list">
+                <div class="upcoming-item">
+                  <div class="upcoming-date">
+                    <span class="day">10</span>
+                    <span class="month">May</span>
+                  </div>
+                  <div class="upcoming-details">
+                    <h4>Biology Lab Report</h4>
+                    <p>Due at 11:59 PM</p>
+                  </div>
+                  <div class="upcoming-status">Assignment</div>
+                </div>
+                <div class="upcoming-item">
+                  <div class="upcoming-date">
+                    <span class="day">12</span>
+                    <span class="month">May</span>
+                  </div>
+                  <div class="upcoming-details">
+                    <h4>Math Chapter 4 Quiz</h4>
+                    <p>In class, 50 minutes</p>
+                  </div>
+                  <div class="upcoming-status">Quiz</div>
+                </div>
+                <div class="upcoming-item">
+                  <div class="upcoming-date">
+                    <span class="day">15</span>
+                    <span class="month">May</span>
+                  </div>
+                  <div class="upcoming-details">
+                    <h4>History Midterm Paper</h4>
+                    <p>Due at 11:59 PM</p>
+                  </div>
+                  <div class="upcoming-status">Assignment</div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="announcements" class="content-section">
+            <div class="section-header">
+              <h2>Announcements</h2>
+            </div>
+            <div class="announcements-list">
+              <div class="card announcement">
+                <div class="announcement-header">
+                  <span class="announcement-date">May 8, 2023</span>
+                  <span class="announcement-class">Biology</span>
+                </div>
+                <h3 class="announcement-title">Lab Session Moved</h3>
+                <div class="announcement-content">
+                  <p>
+                    Lab session tomorrow is moved to Room 302. Don't forget to bring your lab notebooks and wear closed-toe shoes. We will be working with microscopes to observe cell structures.
+                  </p>
+                  <p>Please review Chapter 3 before coming to class.</p>
+                </div>
+              </div>
+              <div class="card announcement">
+                <div class="announcement-header">
+                  <span class="announcement-date">May 7, 2023</span>
+                  <span class="announcement-class">Mathematics</span>
+                </div>
+                <h3 class="announcement-title">Quiz Postponed</h3>
+                <div class="announcement-content">
+                  <p>
+                    The quiz originally scheduled for tomorrow has been postponed to next Wednesday. We will have a review session on Monday instead.
+                  </p>
+                  <p>This will give everyone more time to practice the concepts from Chapter 4.</p>
+                </div>
+              </div>
+              <div class="card announcement">
+                <div class="announcement-header">
+                  <span class="announcement-date">May 5, 2023</span>
+                  <span class="announcement-class">All Classes</span>
+                </div>
+                <h3 class="announcement-title">Spring Break Schedule Adjustment</h3>
+                <div class="announcement-content">
+                  <p>
+                    Please note that the spring break schedule has been adjusted. Break will now start on April 15th instead of April 10th.
+                  </p>
+                  <p>Check the academic calendar for all updated dates.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="assignments" class="content-section">
+            <div class="section-header">
+              <h2>Assignments</h2>
+              <div class="section-filters">
+                <select
+                  id="assignment-filter"
+                  style="background-color: rgba(0, 0, 0, 0.2); color: rgba(255, 255, 255, 0.9); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); padding-right: 30px;"
+                >
+                  <option value="all">All Assignments</option>
+                  <option value="upcoming">Upcoming</option>
+                  <option value="due">Due Soon</option>
+                  <option value="late">Late</option>
+                  <option value="graded">Graded</option>
+                </select>
+              </div>
+            </div>
+            <div class="assignments-list">
+              <div class="card assignment-item">
+                <div class="assignment-status upcoming">Upcoming</div>
+                <div class="assignment-details">
+                  <h3>Cell Structure Research Paper</h3>
+                  <p class="assignment-class">Biology</p>
+                  <p class="assignment-due">Due: May 10, 2023 at 11:59 PM</p>
+                  <div class="assignment-progress">
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: 75%"></div>
+                    </div>
+                    <span class="progress-text">75% Complete</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card assignment-item">
+                <div class="assignment-status due">Due Soon</div>
+                <div class="assignment-details">
+                  <h3>Calculus Problem Set 5</h3>
+                  <p class="assignment-class">Mathematics</p>
+                  <p class="assignment-due">Due: May 9, 2023 at 11:59 PM</p>
+                  <div class="assignment-progress">
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: 30%"></div>
+                    </div>
+                    <span class="progress-text">30% Complete</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card assignment-item">
+                <div class="assignment-status late">Late</div>
+                <div class="assignment-details">
+                  <h3>Renaissance Essay Outline</h3>
+                  <p class="assignment-class">History</p>
+                  <p class="assignment-due">Due: May 5, 2023 at 11:59 PM</p>
+                  <div class="assignment-progress">
+                    <div class="progress-bar">
+                      <div class="progress-fill" style="width: 0%"></div>
+                    </div>
+                    <span class="progress-text">Not Started</span>
+                  </div>
+                </div>
+              </div>
+              <div class="card assignment-item">
+                <div class="assignment-status graded">Graded</div>
+                <div class="assignment-details">
+                  <h3>Literary Analysis Essay</h3>
+                  <p class="assignment-class">English</p>
+                  <p class="assignment-due">Submitted: May 2, 2023</p>
+                  <div class="assignment-grade">
+                    <span class="grade">92/100</span>
+                    <span class="grade-letter">A-</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="grades" class="content-section">
+            <div class="section-header">
+              <h2>Grades</h2>
+            </div>
+            <div class="grades-overview card">
+              <div class="grades-summary">
+                <div class="grade-item">
+                  <span class="grade-label">Current Grade</span>
+                  <span class="grade-value">91.25%</span>
+                </div>
+                <div class="grade-item">
+                  <span class="grade-label">Letter Grade</span>
+                  <span class="grade-value">A-</span>
+                </div>
+              </div>
+              <div class="grade-categories">
+                <div class="category">
+                  <div class="category-header">
+                    <span class="category-name">Assignments (40%)</span>
+                    <span class="category-grade">88%</span>
+                  </div>
+                  <div class="category-bar">
+                    <div class="category-fill" style="width: 88%"></div>
+                  </div>
+                </div>
+                <div class="category">
+                  <div class="category-header">
+                    <span class="category-name">Quizzes (20%)</span>
+                    <span class="category-grade">95%</span>
+                  </div>
+                  <div class="category-bar">
+                    <div class="category-fill" style="width: 95%"></div>
+                  </div>
+                </div>
+                <div class="category">
+                  <div class="category-header">
+                    <span class="category-name">Midterm (20%)</span>
+                    <span class="category-grade">92%</span>
+                  </div>
+                  <div class="category-bar">
+                    <div class="category-fill" style="width: 92%"></div>
+                  </div>
+                </div>
+                <div class="category">
+                  <div class="category-header">
+                    <span class="category-name">Final Project (20%)</span>
+                    <span class="category-grade">Not Graded</span>
+                  </div>
+                  <div class="category-bar">
+                    <div class="category-fill" style="width: 0%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="detailed-grades card">
+              <h3>Assignment Grades</h3>
+              <table class="grades-table">
+                <thead>
+                  <tr>
+                    <th>Assignment</th>
+                    <th>Category</th>
+                    <th>Due Date</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Lab Report #1</td>
+                    <td>Assignments</td>
+                    <td>Apr 15, 2023</td>
+                    <td>Graded</td>
+                    <td>92/100</td>
+                  </tr>
+                  <tr>
+                    <td>Cell Diagrams</td>
+                    <td>Assignments</td>
+                    <td>Apr 22, 2023</td>
+                    <td>Graded</td>
+                    <td>85/100</td>
+                  </tr>
+                  <tr>
+                    <td>Quiz 1: Cell Structure</td>
+                    <td>Quizzes</td>
+                    <td>Apr 25, 2023</td>
+                    <td>Graded</td>
+                    <td>95/100</td>
+                  </tr>
+                  <tr>
+                    <td>Midterm Exam</td>
+                    <td>Midterm</td>
+                    <td>Apr 30, 2023</td>
+                    <td>Graded</td>
+                    <td>92/100</td>
+                  </tr>
+                  <tr>
+                    <td>Research Paper</td>
+                    <td>Assignments</td>
+                    <td>May 10, 2023</td>
+                    <td class="status-pending">Pending</td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td>Quiz 2: Cellular Processes</td>
+                    <td>Quizzes</td>
+                    <td>May 12, 2023</td>
+                    <td class="status-upcoming">Upcoming</td>
+                    <td>-</td>
+                  </tr>
+                  <tr>
+                    <td>Final Project: Cell Model</td>
+                    <td>Final Project</td>
+                    <td>May 25, 2023</td>
+                    <td class="status-upcoming">Upcoming</td>
+                    <td>-</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section id="files" class="content-section">
+            <div class="section-header">
+              <h2>Files</h2>
+              <div class="section-actions">
+                <button class="upload-btn">
+                  <i class="fas fa-upload"></i> Upload
+                </button>
+              </div>
+            </div>
+            <div class="files-container">
+              <div class="card files-category">
+                <h3>Lecture Notes</h3>
+                <div class="files-list">
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Lecture 1 - Introduction to Cell Biology.pdf</span>
+                      <span class="file-info">Added Apr 5, 2023 • 2.4 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Lecture 2 - Cell Structure.pdf</span>
+                      <span class="file-info">Added Apr 12, 2023 • 3.1 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Lecture 3 - Cell Membrane.pdf</span>
+                      <span class="file-info">Added Apr 19, 2023 • 2.8 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card files-category">
+                <h3>Lab Materials</h3>
+                <div class="files-list">
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Lab 1 - Microscopy Techniques.pdf</span>
+                      <span class="file-info">Added Apr 8, 2023 • 1.7 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Lab 2 - Cell Observation.pdf</span>
+                      <span class="file-info">Added Apr 15, 2023 • 2.2 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card files-category">
+                <h3>Study Guides</h3>
+                <div class="files-list">
+                  <div class="file-item">
+                    <div class="file-icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <div class="file-details">
+                      <span class="file-name">Midterm Study Guide.pdf</span>
+                      <span class="file-info">Added Apr 25, 2023 • 1.5 MB</span>
+                    </div>
+                    <div class="file-actions">
+                      <button class="download-btn">
+                        <i class="fas fa-download"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="quizzes" class="content-section">
+            <div class="section-header">
+              <h2>Quizzes</h2>
+            </div>
+            <div class="quizzes-list">
+              <div class="card quiz-item">
+                <div class="quiz-status completed">Completed</div>
+                <div class="quiz-details">
+                  <h3>Quiz 1: Cell Structure</h3>
+                  <p class="quiz-info">
+                    <span class="quiz-date">Completed on Apr 25, 2023</span>
+                    <span class="quiz-points">25 points</span>
+                  </p>
+                  <div class="quiz-score">
+                    <span class="score-label">Your Score:</span>
+                    <span class="score-value">23.75/25 (95%)</span>
+                  </div>
+                  <button class="review-btn">Review Quiz</button>
+                </div>
+              </div>
+              <div class="card quiz-item">
+                <div class="quiz-status upcoming">Upcoming</div>
+                <div class="quiz-details">
+                  <h3>Quiz 2: Cellular Processes</h3>
+                  <p class="quiz-info">
+                    <span class="quiz-date">Opens on May 12, 2023</span>
+                    <span class="quiz-points">30 points</span>
+                  </p>
+                  <div class="quiz-time">
+                    <span class="time-label">Time Limit:</span>
+                    <span class="time-value">50 minutes</span>
+                  </div>
+                  <p class="quiz-description">
+                    This quiz covers material from Chapters 4-5 on cellular processes including respiration and photosynthesis.
+                  </p>
+                </div>
+              </div>
+              <div class="card quiz-item">
+                <div class="quiz-status open">Open</div>
+                <div class="quiz-details">
+                  <h3>Extra Credit Quiz: Scientific Method</h3>
+                  <p class="quiz-info">
+                    <span class="quiz-date">Open until May 15, 2023</span>
+                    <span class="quiz-points">10 points (extra credit)</span>
+                  </p>
+                  <div class="quiz-time">
+                    <span class="time-label">Time Limit:</span>
+                    <span class="time-value">30 minutes</span>
+                  </div>
+                  <p class="quiz-description">
+                    Optional extra credit quiz on the scientific method and experimental design.
+                  </p>
+                  <button class="start-btn">Start Quiz</button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <section id="syllabus" class="content-section">
+            <div class="section-header">
+              <h2>Syllabus</h2>
+              <div class="section-actions">
+                <button class="download-syllabus-btn">
+                  <i class="fas fa-download"></i> Download PDF
+                </button>
+              </div>
+            </div>
+            <div class="syllabus-content card">
+              <div class="syllabus-section">
+                <h3>Course Information</h3>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <span class="info-label">Course:</span>
+                    <span class="info-value">Biology 101: Introduction to Cell Biology</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Instructor:</span>
+                    <span class="info-value">Dr. Sarah Johnson</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Email:</span>
+                    <span class="info-value">sjohnson@university.edu</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Office Hours:</span>
+                    <span class="info-value">Monday &amp; Wednesday 2:00 - 4:00 PM</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Location:</span>
+                    <span class="info-value">Science Building Room 302</span>
+                  </div>
+                  <div class="info-item">
+                    <span class="info-label">Meeting Times:</span>
+                    <span class="info-value">MWF 10:00 - 11:30 AM</span>
+                  </div>
+                </div>
+              </div>
+              <div class="syllabus-section">
+                <h3>Course Description</h3>
+                <p>
+                  This course provides an introduction to the basic principles of cell biology. Topics covered include cell structure, cellular organelles, membrane transport, cellular metabolism, cell division, and cellular communication. The course includes both lecture and laboratory components.
+                </p>
+              </div>
+              <div class="syllabus-section">
+                <h3>Course Objectives</h3>
+                <ul>
+                  <li>Understand the basic structure and function of cells and cellular organelles</li>
+                  <li>Explain the processes of membrane transport and cellular metabolism</li>
+                  <li>Describe the stages of cell division and cellular reproduction</li>
+                  <li>Apply microscopy techniques to observe cellular structures</li>
+                  <li>Analyze experimental data and draw conclusions based on evidence</li>
+                </ul>
+              </div>
+              <div class="syllabus-section">
+                <h3>Grading</h3>
+                <div class="grading-breakdown">
+                  <div class="grading-item">
+                    <span class="grading-category">Assignments</span>
+                    <span class="grading-weight">40%</span>
+                  </div>
+                  <div class="grading-item">
+                    <span class="grading-category">Quizzes</span>
+                    <span class="grading-weight">20%</span>
+                  </div>
+                  <div class="grading-item">
+                    <span class="grading-category">Midterm Exam</span>
+                    <span class="grading-weight">20%</span>
+                  </div>
+                  <div class="grading-item">
+                    <span class="grading-category">Final Project</span>
+                    <span class="grading-weight">20%</span>
+                  </div>
+                </div>
+                <div class="grading-scale">
+                  <h4>Grading Scale</h4>
+                  <div class="scale-grid">
+                    <div class="scale-item">
+                      <span class="grade-range">93-100%</span>
+                      <span class="letter-grade">A</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">90-92%</span>
+                      <span class="letter-grade">A-</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">87-89%</span>
+                      <span class="letter-grade">B+</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">83-86%</span>
+                      <span class="letter-grade">B</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">80-82%</span>
+                      <span class="letter-grade">B-</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">77-79%</span>
+                      <span class="letter-grade">C+</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">73-76%</span>
+                      <span class="letter-grade">C</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">70-72%</span>
+                      <span class="letter-grade">C-</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">67-69%</span>
+                      <span class="letter-grade">D+</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">63-66%</span>
+                      <span class="letter-grade">D</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">60-62%</span>
+                      <span class="letter-grade">D-</span>
+                    </div>
+                    <div class="scale-item">
+                      <span class="grade-range">0-59%</span>
+                      <span class="letter-grade">F</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="syllabus-section">
+                <h3>Course Schedule</h3>
+                <div class="schedule-table">
+                  <div class="schedule-row header">
+                    <span class="week">Week</span>
+                    <span class="dates">Dates</span>
+                    <span class="topics">Topics</span>
+                    <span class="assignments">Assignments</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">1</span>
+                    <span class="dates">Apr 3-7</span>
+                    <span class="topics">Introduction to Cell Biology</span>
+                    <span class="assignments">Reading: Chapter 1</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">2</span>
+                    <span class="dates">Apr 10-14</span>
+                    <span class="topics">Cell Structure and Organization</span>
+                    <span class="assignments">Lab Report #1</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">3</span>
+                    <span class="dates">Apr 17-21</span>
+                    <span class="topics">Cell Membrane and Transport</span>
+                    <span class="assignments">Cell Diagrams</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">4</span>
+                    <span class="dates">Apr 24-28</span>
+                    <span class="topics">Cellular Metabolism</span>
+                    <span class="assignments">Quiz 1</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">5</span>
+                    <span class="dates">May 1-5</span>
+                    <span class="topics">Midterm Week</span>
+                    <span class="assignments">Midterm Exam</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">6</span>
+                    <span class="dates">May 8-12</span>
+                    <span class="topics">Cellular Respiration</span>
+                    <span class="assignments">Research Paper, Quiz 2</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">7</span>
+                    <span class="dates">May 15-19</span>
+                    <span class="topics">Photosynthesis</span>
+                    <span class="assignments">Lab Report #2</span>
+                  </div>
+                  <div class="schedule-row">
+                    <span class="week">8</span>
+                    <span class="dates">May 22-26</span>
+                    <span class="topics">Cell Division and Final Review</span>
+                    <span class="assignments">Final Project Due</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+    <script src="../js/script.js"></script>
+    <script src="js/school-script.js"></script>
+  </body>
+</html>
