@@ -105,12 +105,10 @@ function handleOptionClick(optionType) {
     const passwordModal = document.querySelector('.password-modal');
 
     if (optionType === 'school') {
-      // Show password modal instead of transitioning out immediately
       optionsPanel.style.opacity = '0';
       optionsPanel.style.transform = 'scale(0.95)';
       optionsPanel.style.pointerEvents = 'none';
       
-      // Wait for options to fade out completely before showing password modal
       setTimeout(() => {
         passwordModal.classList.add('visible');
         document.getElementById('school-password').focus();
@@ -119,7 +117,6 @@ function handleOptionClick(optionType) {
       return;
     }
 
-    // For other options, proceed with the original transition
     optionsPanel.style.opacity = '0';
     optionsPanel.style.transform = 'scale(0.95)';
     optionsPanel.style.pointerEvents = 'none';
