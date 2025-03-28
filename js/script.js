@@ -36,24 +36,30 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordInput = document.getElementById('school-password');
   const passwordSubmit = document.getElementById('password-submit');
 
-  passwordModal.addEventListener('click', (e) => {
-    if (e.target === passwordModal) {
-      passwordModal.classList.remove('visible');
-      optionsPanel.style.opacity = '1';
-      optionsPanel.style.transform = 'scale(1)';
-      optionsPanel.style.pointerEvents = 'auto';
-    }
-  });
+  if (passwordModal) {
+    passwordModal.addEventListener('click', (e) => {
+      if (e.target === passwordModal) {
+        passwordModal.classList.remove('visible');
+        optionsPanel.style.opacity = '1';
+        optionsPanel.style.transform = 'scale(1)';
+        optionsPanel.style.pointerEvents = 'auto';
+      }
+    });
+  }
 
-  passwordSubmit.addEventListener('click', () => {
-    handlePasswordSubmit(passwordInput.value);
-  });
-
-  passwordInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
+  if (passwordSubmit) {
+    passwordSubmit.addEventListener('click', () => {
       handlePasswordSubmit(passwordInput.value);
-    }
-  });
+    });
+  }
+
+  if (passwordInput) {
+    passwordInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        handlePasswordSubmit(passwordInput.value);
+      }
+    });
+  }
 });
 
 /**
