@@ -5,6 +5,18 @@
  * Last Modified: 2025-03-28
  */
 
+(function() {
+  const styleElement = document.createElement('style');
+  styleElement.id = 'auth-style';
+  styleElement.textContent = `
+    body > *:not(.loading-overlay) {
+      opacity: 0;
+      visibility: hidden;
+    }
+  `;
+  document.head.appendChild(styleElement);
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   const loadingOverlay = createOrUpdateLoadingOverlay();
   loadingOverlay.classList.add('visible');
@@ -125,6 +137,11 @@ function authenticateSuccess(loadingOverlay) {
   
   if (loadingOverlay) {
     loadingOverlay.classList.remove('visible');
+  }
+  
+  const authStyle = document.getElementById('auth-style');
+  if (authStyle) {
+    authStyle.remove();
   }
 }
 
