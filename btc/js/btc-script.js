@@ -243,6 +243,13 @@ document.addEventListener('DOMContentLoaded', () => {
     timeButtons.forEach(button => {
       button.addEventListener('click', () => {
         if (button.classList.contains('active')) return;
+        
+        const prevActivePeriod = document.querySelector('.time-btn.active')?.innerText;
+        if (prevActivePeriod && window.chartRetryTimers && window.chartRetryTimers[prevActivePeriod]) {
+          clearTimeout(window.chartRetryTimers[prevActivePeriod]);
+          delete window.chartRetryTimers[prevActivePeriod];
+        }
+        
         timeButtons.forEach(btn => btn.classList.remove('active'));
         button.classList.add('active');
   
@@ -427,7 +434,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }
         } catch (error) {
-          // Silent error handling
         }
       });
       window.priceSocket = socket;
@@ -642,6 +648,44 @@ document.addEventListener('DOMContentLoaded', () => {
             chartHeader.textContent = originalText;
           }, 3000);
         }
+        
+        const retryDelay = 5000;
+        if (!window.chartRetryTimers) window.chartRetryTimers = {};
+        
+        if (window.chartRetryTimers[period]) {
+          clearTimeout(window.chartRetryTimers[period]);
+        }
+        
+        window.chartRetryTimers[period] = setTimeout(() => {
+          console.log(`Retrying chart data load for ${period} after rate limit`);
+          loadRealBTCData(period);
+          delete window.chartRetryTimers[period];
+        }, retryDelay);
+        
+        const chart = window.btcChart;
+        if (chart) {
+          if (!chart.options.plugins.annotation) {
+            chart.options.plugins.annotation = { annotations: {} };
+          }
+          chart.options.plugins.annotation.annotations.retryBox = {
+            type: 'box',
+            xMin: 'center',
+            xMax: 'center',
+            yMin: 'center',
+            yMax: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            borderColor: 'rgba(255, 255, 255, 0.2)',
+            borderWidth: 1,
+            label: {
+              display: true,
+              content: 'Retrying in 5s...',
+              color: 'rgba(255, 255, 255, 0.8)',
+              font: { size: 14 },
+            },
+          };
+          chart.update();
+        }
+        
         setTimeout(() => {
           window.pauseRealtimeUpdates = false;
         }, 1000);
@@ -712,6 +756,12 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch (error) {
       const chartContainer = document.querySelector('.chart-container');
       if (chartContainer) chartContainer.classList.remove('loading');
+      
+      if (window.chartRetryTimers && window.chartRetryTimers[period]) {
+        clearTimeout(window.chartRetryTimers[period]);
+        delete window.chartRetryTimers[period];
+      }
+      
       if (window.cachedChartData && window.cachedChartData[period]) {
         updateChartWithData(window.cachedChartData[period], period);
       } else {
@@ -723,6 +773,16 @@ document.addEventListener('DOMContentLoaded', () => {
             chartHeader.textContent = originalText;
           }, 3000);
         }
+        
+        const retryDelay = 15000;
+        if (!window.chartRetryTimers) window.chartRetryTimers = {};
+        
+        window.chartRetryTimers[period] = setTimeout(() => {
+          console.log(`Retrying chart data load for ${period} after error`);
+          loadRealBTCData(period);
+          delete window.chartRetryTimers[period];
+        }, retryDelay);
+        
         const chart = window.btcChart;
         if (chart) {
           chart.data.labels = [];
@@ -741,9 +801,9 @@ document.addEventListener('DOMContentLoaded', () => {
             borderWidth: 1,
             label: {
               display: true,
-              content: 'No Data Available',
+              content: 'No Data Available\nRetrying in 15s...',
               color: 'rgba(255, 255, 255, 0.8)',
-              font: { size: 16 },
+              font: { size: 14 },
             },
           };
           chart.update();
@@ -771,6 +831,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     const chart = window.btcChart;
     if (chart) {
+      if (chart.options.plugins.annotation && chart.options.plugins.annotation.annotations) {
+        if (chart.options.plugins.annotation.annotations.retryBox) {
+          delete chart.options.plugins.annotation.annotations.retryBox;
+        }
+        if (chart.options.plugins.annotation.annotations.noDataBox) {
+          delete chart.options.plugins.annotation.annotations.noDataBox;
+        }
+      }
+      
       chart.options.scales.y.min = window.priceRange.min;
       chart.options.scales.y.max = window.priceRange.max;
       chart.data.labels = [...labels];
@@ -1034,7 +1103,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const transactionList = document.querySelector('.transaction-list');
     if (!transactionList) return;
     transactionList.innerHTML = '';
-    // Additional logic to generate and insert transactions would go here.
   }
   
   /**
