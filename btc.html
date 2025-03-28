@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTC</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/btc-styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="animated-background"></div>
+      <div class="dashboard">
+        <div class="dashboard-header">
+          <h1>Bitcoin Dashboard</h1>
+          <div class="back-button">
+            <span>&larr; Back</span>
+          </div>
+        </div>
+        <div class="dashboard-grid">
+          <div class="card balance-card">
+            <h2>Balance</h2>
+            <div class="balance-amount">
+              <span class="currency">BTC</span>
+              <span class="amount">Loading.</span>
+            </div>
+            <div class="balance-usd">
+              <span>$</span>
+              <span class="usd-amount">Loading.</span>
+            </div>
+          </div>
+          <div class="card price-card">
+            <h2>Current Price</h2>
+            <div class="price">
+              <span>$</span>
+              <span class="btc-price">Loading.</span>
+            </div>
+            <div class="price-change">
+              <span class="change-percentage">Loading.</span>
+              <span class="change-period">24h</span>
+            </div>
+          </div>
+          <div class="card stats-card">
+            <h2>Market Stats</h2>
+            <div class="stats-grid">
+              <div class="stat">
+                <span class="stat-label">Market Cap</span>
+                <span id="market-cap" class="stat-value">Loading.</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">24h Volume</span>
+                <span id="volume-24h" class="stat-value">Loading.</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Dominance</span>
+                <span id="btc-dominance" class="stat-value">Loading.</span>
+              </div>
+              <div class="stat">
+                <span class="stat-label">Supply</span>
+                <span id="btc-supply" class="stat-value">Loading.</span>
+              </div>
+            </div>
+          </div>
+          <div class="card chart-card">
+            <div class="chart-header">
+              <h2>Price History (12h)</h2>
+              <div class="time-selector">
+                <button class="time-btn active">12h</button>
+                <button class="time-btn">24h</button>
+                <button class="time-btn">7d</button>
+              </div>
+            </div>
+            <div class="chart-container">
+              <canvas id="btcChart"></canvas>
+            </div>
+          </div>
+          <div class="card transactions-card">
+            <h2>Recent Transactions</h2>
+            <div class="transaction-list">
+              <div class="transaction">
+                <div class="transaction-info">
+                  <span class="transaction-type sent">Sent</span>
+                  <span class="transaction-date">Today, 2:32 PM</span>
+                </div>
+                <div class="transaction-amount">
+                  <span>-0.025 BTC</span>
+                </div>
+              </div>
+              <div class="transaction">
+                <div class="transaction-info">
+                  <span class="transaction-type received">Received</span>
+                  <span class="transaction-date">Yesterday, 9:47 AM</span>
+                </div>
+                <div class="transaction-amount">
+                  <span>+0.142 BTC</span>
+                </div>
+              </div>
+              <div class="transaction">
+                <div class="transaction-info">
+                  <span class="transaction-type sent">Sent</span>
+                  <span class="transaction-date">May 4, 10:18 PM</span>
+                </div>
+                <div class="transaction-amount">
+                  <span>-0.078 BTC</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="js/btc-script.js"></script>
+  </body>
+</html>
