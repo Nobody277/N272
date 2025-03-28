@@ -32,28 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // Password modal event listeners
   const passwordModal = document.querySelector('.password-modal');
   const passwordInput = document.getElementById('school-password');
   const passwordSubmit = document.getElementById('password-submit');
 
-  // Close modal when clicking outside the password container
   passwordModal.addEventListener('click', (e) => {
     if (e.target === passwordModal) {
       passwordModal.classList.remove('visible');
-      // Re-show options panel when password modal is closed
       optionsPanel.style.opacity = '1';
       optionsPanel.style.transform = 'scale(1)';
       optionsPanel.style.pointerEvents = 'auto';
     }
   });
 
-  // Handle submit button click
   passwordSubmit.addEventListener('click', () => {
     handlePasswordSubmit(passwordInput.value);
   });
 
-  // Handle Enter key press
   passwordInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
       handlePasswordSubmit(passwordInput.value);
@@ -71,7 +66,6 @@ function handlePasswordSubmit(password) {
     return;
   }
 
-  // Contact the backend at your Render URL
   fetch('https://n272-backend.onrender.com/api/school-authenticate', {
     method: 'POST',
     headers: {
@@ -87,7 +81,6 @@ function handlePasswordSubmit(password) {
     })
     .then(data => {
       if (data.success) {
-        // Successful authentication; redirect to the school section
         window.location.href = 'school.html?transition=true';
       } else {
         alert('Invalid password.');
