@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * Handles the password submission and sends it to the backend for verification.
+ * First pings the server to wake it up, then sends the password.
  * @param {string} password - The submitted password.
  */
 function handlePasswordSubmit(password) {
@@ -66,13 +67,19 @@ function handlePasswordSubmit(password) {
     return;
   }
 
-  fetch('https://n272-backend.onrender.com/api/school-authenticate', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ password })
-  })
+  const loadingOverlay = document.querySelector('.loading-overlay');
+  loadingOverlay.classList.add('visible');
+  
+  fetch('https://n272-backend.onrender.com/api/wake-up')
+    .then(response => {
+      return fetch('https://n272-backend.onrender.com/api/school-authenticate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ password })
+      });
+    })
     .then(response => {
       if (!response.ok) {
         throw new Error('Invalid password or server error');
@@ -80,6 +87,8 @@ function handlePasswordSubmit(password) {
       return response.json();
     })
     .then(data => {
+      loadingOverlay.classList.remove('visible');
+      
       if (data.success) {
         window.location.href = 'school.html?transition=true';
       } else {
@@ -87,6 +96,8 @@ function handlePasswordSubmit(password) {
       }
     })
     .catch(error => {
+      loadingOverlay.classList.remove('visible');
+      
       console.error('Error during authentication:', error);
       alert('Error: ' + error.message);
     });
