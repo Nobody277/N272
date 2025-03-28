@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const passwordModal = document.querySelector('.password-modal');
   const passwordInput = document.getElementById('school-password');
   const passwordSubmit = document.getElementById('password-submit');
+  const errorMessage = document.querySelector('.error-message');
+  const errorText = document.querySelector('.error-text');
+  const errorClose = document.querySelector('.error-close');
 
   if (passwordModal) {
     passwordModal.addEventListener('click', (e) => {
@@ -62,7 +65,49 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  
+  if (errorClose) {
+    errorClose.addEventListener('click', () => {
+      hideError();
+    });
+  }
+  
+  if (errorMessage) {
+    errorMessage.addEventListener('click', (e) => {
+      if (e.target === errorMessage) {
+        hideError();
+      }
+    });
+  }
 });
+
+/**
+ * Shows a custom error message
+ * @param {string} message - The error message to display
+ */
+function showError(message) {
+  const errorMessage = document.querySelector('.error-message');
+  const errorText = document.querySelector('.error-text');
+  
+  if (errorText) {
+    errorText.textContent = message;
+  }
+  
+  if (errorMessage) {
+    errorMessage.classList.add('visible');
+  }
+}
+
+/**
+ * Hides the custom error message
+ */
+function hideError() {
+  const errorMessage = document.querySelector('.error-message');
+  
+  if (errorMessage) {
+    errorMessage.classList.remove('visible');
+  }
+}
 
 /**
  * Handles the password submission and sends it to the backend for verification.
@@ -71,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
  */
 function handlePasswordSubmit(password) {
   if (!password.trim()) {
-    alert('Please enter a password');
+    showError('Please enter a password');
     return;
   }
 
@@ -100,14 +145,13 @@ function handlePasswordSubmit(password) {
       if (data.success) {
         window.location.href = 'school.html?transition=true';
       } else {
-        alert('Invalid password.');
+        showError('Invalid password.');
       }
     })
     .catch(error => {
       loadingOverlay.classList.remove('visible');
-      
       console.error('Error during authentication:', error);
-      alert('Error: ' + error.message);
+      showError(error.message);
     });
 }
 
