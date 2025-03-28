@@ -143,7 +143,7 @@ function handlePasswordSubmit(password) {
       loadingOverlay.classList.remove('visible');
       
       if (data.success) {
-        window.location.href = 'school/index.html';
+        window.location.href = 'school';
       } else {
         showError('Invalid password.');
       }
@@ -216,7 +216,7 @@ function handleOptionClick(optionType) {
     switch (optionType) {
       case 'btc':
         setTimeout(() => {
-          window.location.href = 'btc/index.html';
+          window.location.href = 'btc';
         }, 900);
         break;
       case 'tbd':

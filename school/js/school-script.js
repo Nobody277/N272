@@ -102,7 +102,7 @@ function setupBackButton() {
         fadeOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.9)';
       }, 10);
       setTimeout(function () {
-        window.location.href = '../index.html';
+        window.location.href = '../';
       }, 800);
     });
   }
